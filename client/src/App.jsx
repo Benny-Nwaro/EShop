@@ -30,8 +30,8 @@ function App() {
       <Navbar/>
       <Routes>
       <Route exact path = "/" Component={Background}/>
-      <Route exact path = "/register" Component={Register}/> 
-      <Route exact path = "/login" Component={LogIn}/> 
+      {/* <Route exact path = "/register" Component={Register}/>  */}
+      {/* <Route exact path = "/login" Component={LogIn}/>  */}
       {/* <Route exact path = "/dashboard" Component={Dashboard}/>  */}
 
       </Routes>
