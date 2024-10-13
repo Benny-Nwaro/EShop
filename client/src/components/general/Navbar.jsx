@@ -4,7 +4,7 @@ import {Link } from "react-router-dom"
 import { logout } from '../../actions/authActions'
 
 
-const Navbar = ({auth :{isAutenticated}}, logout)=> {
+const Navbar = ({auth, logout})=> {
   const guest = (
     <ul>
     <li>
@@ -21,7 +21,7 @@ const Navbar = ({auth :{isAutenticated}}, logout)=> {
   const user = (
     <ul>
     <li>
-      <Link to = "/register?role=merchant">Merchants</Link>
+      <Link to = "/dashboard">Dashboard</Link>
     </li>
    
     <li>
@@ -36,7 +36,7 @@ const Navbar = ({auth :{isAutenticated}}, logout)=> {
         <i className='fas fa-store'></i>e-Shop
         </Link>
       </h1>
-      {isAutenticated ? user : guest}
+      {auth.token !== null ? user : guest}
   
     </nav>
   )

@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
-const config = require("./keys");
-const db = config.mongoDbURI;
+const dotenv = require('dotenv')
+dotenv.config()
+const db = process.env.MONGO_DB_URI;
 const clientOptions = { serverApi: { version: '1', strict: true, deprecationErrors: true } };
 
 const connectDb = async ()=>{
