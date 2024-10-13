@@ -59,6 +59,7 @@ img {
   padding: 0 2rem;
   margin-top: 6rem;
   margin-bottom: 3rem;
+  float: left;
 }
 
 /* Text Styles*/
@@ -365,7 +366,7 @@ button {
 .landing {
   margin-top: 6.3%;
   position: relative;
-  background: url("../assets/images/eshop.jpg") no-repeat center center/cover;
+  background: url("/assets/images/eshop.jpg") no-repeat center center/cover;
   height: 60vh;
 }
 

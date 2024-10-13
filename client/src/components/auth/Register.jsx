@@ -1,83 +1,108 @@
-import React, { Component } from 'react'
-import {register} from "../../actions/authActions"
-import { connect } from 'react-redux';
+import { register } from "../../actions/authActions";
+import { connect } from "react-redux";
 import { message } from "antd";
+import { Link, useNavigate } from 'react-router-dom';
 
-class Register extends Component {
-    constructor(){
-        super();
-        this.state = {
-            name : "",
-            email : "",
-            password : "",
-            password2 : "",
+import React, { useEffect, useState } from "react";
 
-        }
-        this.onChange = this.onChange.bind(this)
-        this.onSubmit = this.onSubmit.bind(this)
+const Register = ({ auth, register }) => {
+  const [inputs, setInputs] = useState({
+    name: "",
+    email: "",
+    password: "",
+    password2: "",
+  });
+  const navigate = useNavigate();
 
 
-      }
-      UNSAFE_componentWillReceiveProps(nextProps){
-        if(nextProps && nextProps.auth.errors && nextProps.auth.errors.length > 0){
-          nextProps.auth.errors.forEach(error =>{
-            message.error(error.msg)
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setInputs((prevInputs) => ({
+      ...prevInputs,
+      [name]: value,
+    }));
+  };
 
-          })
-        }
-        else if(nextProps.auth.isAutenticated){
-          message.success("Successfully registered")
+  const onSubmit = (e) => {
+    e.preventDefault();
 
-         
-        }
-      }
-    onChange(e){
-      this.setState({[e.target.name] : e.target.value})
+    let role = new URLSearchParams(window.location.search).get("role");
+
+    const { name, email, password, password2 } = inputs;
+    const newUser = { name, email, password, role };
+
+    if (password === password2) {
+      register(newUser);
+    } else {
+      message.error("Passwords do not match");
     }
-    onSubmit (e){
-      e.preventDefault
-      let role = window.location.search.split("?role=")
-      role = role[role.length-1]
-      
-      const {name, email, password} = this.state;
-      const newUser = {
-        name, email, password, role,
-      }
-      if(this.state.password2 === password){
-        this.props.register(newUser)
-        
-      }
-      else{
-        message.error("Password does not match")
-      }
+  };
+
+  useEffect(() => {
+    if (auth.errors && auth.errors.length > 0) {
+      auth.errors.forEach((error) => message.error(error.msg));
+    } else if (localStorage.token !== undefined) {
+      message.success("Successfully registered");
+      setTimeout(() => navigate('/', { replace: true }), 3000); 
 
     }
-  render() {
-    const {name, email, password, password2} = this.state;
-    return (
-      <div className='container'>
+  }, [auth]);
+
+  return (
+    <div className="container">
       <div className="form-group">
         <h1 className="large text-primary">Register</h1>
-        <p className="lead"><i className="fa-solid fa-user"></i> Create Account</p>
-        <div className="form">
-            <input name = "name" type = "text" placeholder = "Enter name" value = {name} onChange = {this.onChange}/>
-        </div>
-        <div className="form">
-            <input name = "email" type = "email" placeholder = "Enter Email" value = {email} onChange = {this.onChange}/>
-        </div>
-        <div className="form">
-            <input name = "password" type = "password" placeholder = "Enter password" value = {password} onChange = {this.onChange}/>
-        </div>
-        <div className="form">
-            <input name='password2' type = "password" placeholder = "Confirm password" value = {password2} onChange = {this.onChange}/>
-        </div>
-        <div className="btn btn-primary" onClick={this.onSubmit}>Submit</div>
-        </div>
+        <p className="lead">
+          <i className="fa-solid fa-user"></i> Create Account
+        </p>
+        <form onSubmit={onSubmit}>
+          <div className="form">
+            <input
+              name="name"
+              type="text"
+              placeholder="Enter name"
+              value={inputs.name}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="form">
+            <input
+              name="email"
+              type="email"
+              placeholder="Enter Email"
+              value={inputs.email}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="form">
+            <input
+              name="password"
+              type="password"
+              placeholder="Enter password"
+              value={inputs.password}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="form">
+            <input
+              name="password2"
+              type="password"
+              placeholder="Confirm password"
+              value={inputs.password2}
+              onChange={handleChange}
+            />
+          </div>
+          <button type="submit" className="btn btn-primary">
+            Submit
+          </button>
+        </form>
       </div>
-    )
-  }
-}
-const mapStateToProps = (state) =>({
-  auth : state.auth
-})
-export default connect(mapStateToProps, {register})(Register);
+    </div>
+  );
+};
+
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+});
+
+export default connect(mapStateToProps, { register })(Register);

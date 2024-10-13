@@ -11,6 +11,7 @@ export default function Background() {
         <p className="lead">Shop at an amazing price and Value</p>
       </div>
     </div>
+    
   </section>
   )
 }

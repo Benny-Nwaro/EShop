@@ -2,7 +2,7 @@ import {SET_CURRENT_USER, SUCCESSFUL_REGISTER, ERRORS, FAILURE_REGISTER, AUTH_FA
 import {isEmpty} from "lodash"
 
 const initialState = {
-    isAutenticated : false,
+    isAuthenticated : localStorage.getItem("token")?true:false,
     token : localStorage.getItem("token"),
     errors : [],
     user: {}
@@ -13,7 +13,7 @@ const authReducer =  (state = initialState, action) => {
         case SET_CURRENT_USER:
             return{
                 ...state,
-                isAutenticated : isEmpty(payload),
+                isAuthenticated : isEmpty(payload),
                 user : payload
             }
         case SUCCESSFUL_REGISTER:
@@ -21,14 +21,14 @@ const authReducer =  (state = initialState, action) => {
             return{
                 ...state,
                 ...payload,
-                isAutenticated : true
+                isAuthenticated : true
             }
         case SUCCESSFUL_LOGIN:
             localStorage.setItem("token", payload.token);
             return{
                 ...state,
                 ...payload,
-                isAutenticated : true
+                isAuthenticated : true
             }
         case FAILURE_REGISTER : 
         case AUTH_FAILURE:
@@ -38,7 +38,7 @@ const authReducer =  (state = initialState, action) => {
             return{
                 ...state,
                 token : null,
-                isAutenticated : false,
+                isAuthenticated : false,
             }
             
         case ERRORS:

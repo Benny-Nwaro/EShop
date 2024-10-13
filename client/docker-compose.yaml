@@ -1,0 +1,19 @@
+services:
+  server:
+    image: benaroh30/server
+    ports:
+      - "8080:8080"
+    environment:
+      - MONGO_DB_URI=${MONGO_DB_URI}
+      - ECOMMERCE_SECRET=${ECOMMERCE_SECRET}
+  client:
+    build: 
+      dockerfile: Dockerfile
+      context: ./
+    depends_on:
+      - server
+    volumes:
+      - ./node_modules:/client/node_modules
+      - ./:/client
+    ports:
+      - "3000:3000"
