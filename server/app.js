@@ -7,7 +7,7 @@ const PORT = process.env.PORT || 8080;
 const callBack = () => {
   console.log(`Server listening on port ${PORT}`);
 };
-
+console.log("connecting to database")
 connectDb();
 
 app.use(cors())
